@@ -1,5 +1,6 @@
 use crate::error::ErrorCode;
 use crate::state::Vault;
+use crate::utils::accrue_rewards;
 use anchor_lang::prelude::*;
 use anchor_spl::token_interface::{TokenInterface, TokenAccount};
 
@@ -69,30 +70,4 @@ pub struct Unstake<'info> {
     pub token_program: Interface<'info, TokenInterface>,
 
     pub clock: Sysvar<'info, Clock>,
-}
-
-const YEAR: u128 = 365 * 24 * 60 * 60;
-
-fn accrue_rewards(vault: &mut Vault, clock: &Sysvar<Clock>) -> Result<()> {
-    let now = clock.unix_timestamp;
-    let delta = now.checked_sub(vault.last_reward_time).ok_or(ErrorCode::TimeError)?;
-    if delta <= 0 {
-        return Ok(());
-    }
-
-    let pending = (vault.staked_amount as u128)
-        .checked_mul(10)
-        .ok_or(ErrorCode::Overflow)?
-        .checked_mul(delta as u128)
-        .ok_or(ErrorCode::Overflow)?
-        .checked_div(100 * YEAR)
-        .ok_or(ErrorCode::Overflow)? as u64;
-
-    vault.reward_debt = vault
-        .reward_debt
-        .checked_add(pending)
-        .ok_or(ErrorCode::Overflow)?;
-    vault.last_reward_time = now;
-
-    Ok(())
 }

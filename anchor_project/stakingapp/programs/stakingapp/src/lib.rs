@@ -6,10 +6,12 @@ declare_id!("6FmWYQ81oXzFuMMzU2UawfcMXFuLYeLLjM6QjexbzhsW");
 pub mod error;
 pub mod state;
 pub mod instructions;
+pub mod utils;
 
 pub use crate::error::*;
 pub use crate::state::*;
 pub use crate::instructions::*;
+pub use crate::utils::*;
 
 #[program]
 pub mod stakingapp {

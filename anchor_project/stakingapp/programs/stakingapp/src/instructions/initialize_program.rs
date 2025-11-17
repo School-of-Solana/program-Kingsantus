@@ -3,7 +3,7 @@ use anchor_lang::prelude::*;
 
 pub fn handler(ctx: Context<InitializeProgram>) -> Result<()> {
     let global = &mut ctx.accounts.global_state;
-    global.reward_per_second = 1_000_000_000_000;
+    global.reward_per_second = 792_744;
     global.total_staked = 0;
     global.last_update_time = Clock::get()?.unix_timestamp;
     global.reward_mint_authority_bump = ctx.bumps.reward_mint_authority;
@@ -21,8 +21,9 @@ pub struct InitializeProgram<'info> {
     )]
     pub global_state: Account<'info, GlobalState>,
 
+    /// CHECK: Global reward mint authority PDA
     #[account(seeds = [b"reward_authority"], bump)]
-    pub reward_mint_authority: SystemAccount<'info>,
+    pub reward_mint_authority: UncheckedAccount<'info>,
 
     #[account(mut)]
     pub authority: Signer<'info>,
