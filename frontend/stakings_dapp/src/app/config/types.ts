@@ -1,4 +1,10 @@
-{
+/**
+ * Program IDL in camelCase format in order to be used in JS/TS.
+ *
+ * Note that this is only a type helper and is not the actual IDL. The original
+ * IDL can be found at `target/idl/stakingapp.json`.
+ */
+export type Stakingapp = {
   "address": "6jBDgZQh6CgJFE6SvkTBHx4oUHZzF92M3d7qog7KWePz",
   "metadata": {
     "name": "stakingapp",
@@ -8,7 +14,7 @@
   },
   "instructions": [
     {
-      "name": "claim_rewards",
+      "name": "claimRewards",
       "discriminator": [
         4,
         144,
@@ -43,7 +49,7 @@
           }
         },
         {
-          "name": "reward_mint_authority",
+          "name": "rewardMintAuthority",
           "writable": true,
           "pda": {
             "seeds": [
@@ -72,11 +78,11 @@
           }
         },
         {
-          "name": "reward_mint",
+          "name": "rewardMint",
           "writable": true
         },
         {
-          "name": "user_reward_account",
+          "name": "userRewardAccount",
           "writable": true,
           "pda": {
             "seeds": [
@@ -123,7 +129,7 @@
               },
               {
                 "kind": "account",
-                "path": "reward_mint"
+                "path": "rewardMint"
               }
             ],
             "program": {
@@ -171,7 +177,7 @@
           "signer": true
         },
         {
-          "name": "token_program",
+          "name": "tokenProgram",
           "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
@@ -182,7 +188,7 @@
       "args": []
     },
     {
-      "name": "get_yield",
+      "name": "getYield",
       "discriminator": [
         184,
         8,
@@ -231,7 +237,7 @@
       "returns": "u64"
     },
     {
-      "name": "initialize_program",
+      "name": "initializeProgram",
       "discriminator": [
         176,
         107,
@@ -244,7 +250,7 @@
       ],
       "accounts": [
         {
-          "name": "global_state",
+          "name": "globalState",
           "writable": true,
           "pda": {
             "seeds": [
@@ -263,7 +269,7 @@
           }
         },
         {
-          "name": "reward_mint_authority",
+          "name": "rewardMintAuthority",
           "pda": {
             "seeds": [
               {
@@ -296,14 +302,14 @@
           "signer": true
         },
         {
-          "name": "system_program",
+          "name": "systemProgram",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": []
     },
     {
-      "name": "initialize_vault",
+      "name": "initializeVault",
       "discriminator": [
         48,
         191,
@@ -338,7 +344,7 @@
           }
         },
         {
-          "name": "vault_token_account",
+          "name": "vaultTokenAccount",
           "writable": true,
           "pda": {
             "seeds": [
@@ -385,7 +391,7 @@
               },
               {
                 "kind": "account",
-                "path": "stake_mint"
+                "path": "stakeMint"
               }
             ],
             "program": {
@@ -433,18 +439,18 @@
           "signer": true
         },
         {
-          "name": "stake_mint"
+          "name": "stakeMint"
         },
         {
-          "name": "system_program",
+          "name": "systemProgram",
           "address": "11111111111111111111111111111111"
         },
         {
-          "name": "token_program",
+          "name": "tokenProgram",
           "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
-          "name": "associated_token_program",
+          "name": "associatedTokenProgram",
           "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
         },
         {
@@ -459,7 +465,7 @@
       "args": []
     },
     {
-      "name": "set_vault_authority",
+      "name": "setVaultAuthority",
       "discriminator": [
         19,
         156,
@@ -472,7 +478,7 @@
       ],
       "accounts": [
         {
-          "name": "vault_token_account",
+          "name": "vaultTokenAccount",
           "writable": true
         },
         {
@@ -493,7 +499,7 @@
               {
                 "kind": "account",
                 "path": "vault.user",
-                "account": "Vault"
+                "account": "vault"
               }
             ]
           }
@@ -504,7 +510,7 @@
           "signer": true
         },
         {
-          "name": "token_program",
+          "name": "tokenProgram",
           "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         }
       ],
@@ -546,7 +552,7 @@
           }
         },
         {
-          "name": "vault_token_account",
+          "name": "vaultTokenAccount",
           "writable": true,
           "pda": {
             "seeds": [
@@ -593,7 +599,7 @@
               },
               {
                 "kind": "account",
-                "path": "stake_mint"
+                "path": "stakeMint"
               }
             ],
             "program": {
@@ -636,7 +642,7 @@
           }
         },
         {
-          "name": "user_stake_account",
+          "name": "userStakeAccount",
           "writable": true
         },
         {
@@ -645,10 +651,10 @@
           "signer": true
         },
         {
-          "name": "stake_mint"
+          "name": "stakeMint"
         },
         {
-          "name": "token_program",
+          "name": "tokenProgram",
           "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
@@ -699,7 +705,7 @@
           }
         },
         {
-          "name": "vault_token_account",
+          "name": "vaultTokenAccount",
           "writable": true,
           "pda": {
             "seeds": [
@@ -746,7 +752,7 @@
               },
               {
                 "kind": "account",
-                "path": "stake_mint"
+                "path": "stakeMint"
               }
             ],
             "program": {
@@ -789,7 +795,7 @@
           }
         },
         {
-          "name": "user_stake_account",
+          "name": "userStakeAccount",
           "writable": true
         },
         {
@@ -798,10 +804,10 @@
           "signer": true
         },
         {
-          "name": "stake_mint"
+          "name": "stakeMint"
         },
         {
-          "name": "token_program",
+          "name": "tokenProgram",
           "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
@@ -819,7 +825,7 @@
   ],
   "accounts": [
     {
-      "name": "GlobalState",
+      "name": "globalState",
       "discriminator": [
         163,
         46,
@@ -832,7 +838,7 @@
       ]
     },
     {
-      "name": "Vault",
+      "name": "vault",
       "discriminator": [
         211,
         8,
@@ -848,62 +854,62 @@
   "errors": [
     {
       "code": 6000,
-      "name": "InsufficientStake",
+      "name": "insufficientStake",
       "msg": "Insufficient staked amount"
     },
     {
       "code": 6001,
-      "name": "InvalidRewardAuthority",
+      "name": "invalidRewardAuthority",
       "msg": "Reward mint authority mismatch"
     },
     {
       "code": 6002,
-      "name": "Overflow",
+      "name": "overflow",
       "msg": "Arithmetic overflow"
     },
     {
       "code": 6003,
-      "name": "TimeError",
+      "name": "timeError",
       "msg": "Time calculation error"
     },
     {
       "code": 6004,
-      "name": "Unauthorized",
+      "name": "unauthorized",
       "msg": "Only the vault creator can set authority"
     },
     {
       "code": 6005,
-      "name": "AlreadySet",
+      "name": "alreadySet",
       "msg": "Vault authority already set"
     }
   ],
   "types": [
     {
-      "name": "GlobalState",
+      "name": "globalState",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "reward_per_second",
+            "name": "rewardPerSecond",
             "type": "u64"
           },
           {
-            "name": "total_staked",
+            "name": "totalStaked",
             "type": "u64"
           },
           {
-            "name": "last_update_time",
+            "name": "lastUpdateTime",
             "type": "i64"
           },
           {
-            "name": "reward_mint_authority_bump",
+            "name": "rewardMintAuthorityBump",
             "type": "u8"
           }
         ]
       }
     },
     {
-      "name": "Vault",
+      "name": "vault",
       "type": {
         "kind": "struct",
         "fields": [
@@ -912,15 +918,15 @@
             "type": "pubkey"
           },
           {
-            "name": "staked_amount",
+            "name": "stakedAmount",
             "type": "u64"
           },
           {
-            "name": "last_reward_time",
+            "name": "lastRewardTime",
             "type": "i64"
           },
           {
-            "name": "reward_debt",
+            "name": "rewardDebt",
             "type": "u64"
           },
           {
@@ -928,11 +934,12 @@
             "type": "u8"
           },
           {
-            "name": "authority_set",
+            "name": "authoritySet",
             "type": "bool"
           }
         ]
       }
     }
   ]
-}
+};
+
