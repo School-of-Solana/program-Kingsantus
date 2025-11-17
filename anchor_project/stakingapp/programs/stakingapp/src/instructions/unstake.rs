@@ -2,36 +2,37 @@ use crate::error::ErrorCode;
 use crate::state::Vault;
 use crate::utils::accrue_rewards;
 use anchor_lang::prelude::*;
-use anchor_spl::token_interface::{TokenInterface, TokenAccount};
+use anchor_spl::token::{Token, TokenAccount, Transfer};
 
 pub fn handler(ctx: Context<Unstake>, amount: u64) -> Result<()> {
     require!(amount > 0, ErrorCode::InsufficientStake);
-
-    let vault_info = ctx.accounts.vault.to_account_info();
+    require!(ctx.accounts.vault.staked_amount >= amount, ErrorCode::InsufficientStake);
 
     let vault = &mut ctx.accounts.vault;
-    require!(vault.staked_amount >= amount, ErrorCode::InsufficientStake);
-
     accrue_rewards(vault, &ctx.accounts.clock)?;
 
     let user_key = ctx.accounts.user.key();
-    let seeds = &[
+
+    let vault_seeds = &[
         b"vault".as_ref(),
         user_key.as_ref(),
         &[ctx.bumps.vault],
     ];
-    let signer = &[&seeds[..]];
+    let signer_seeds = &[&vault_seeds[..]];
 
-    let cpi_accounts = anchor_spl::token::Transfer {
+    let vault_authority = vault.to_account_info();
+
+    let cpi_accounts = Transfer {
         from: ctx.accounts.vault_token_account.to_account_info(),
         to: ctx.accounts.user_stake_account.to_account_info(),
-        authority: vault_info,
+        authority: vault_authority.clone(),
     };
     let cpi_ctx = CpiContext::new_with_signer(
         ctx.accounts.token_program.to_account_info(),
         cpi_accounts,
-        signer,
+        signer_seeds,
     );
+
     anchor_spl::token::transfer(cpi_ctx, amount)?;
 
     vault.staked_amount = vault
@@ -57,17 +58,17 @@ pub struct Unstake<'info> {
         associated_token::mint = stake_mint,
         associated_token::authority = vault
     )]
-    pub vault_token_account: InterfaceAccount<'info, TokenAccount>,
+    pub vault_token_account: Account<'info, TokenAccount>,
 
     #[account(mut)]
-    pub user_stake_account: InterfaceAccount<'info, TokenAccount>,
+    pub user_stake_account: Account<'info, TokenAccount>,
 
     #[account(mut)]
     pub user: Signer<'info>,
 
-    pub stake_mint: InterfaceAccount<'info, anchor_spl::token_interface::Mint>,
+    pub stake_mint: Account<'info, anchor_spl::token::Mint>,
 
-    pub token_program: Interface<'info, TokenInterface>,
+    pub token_program: Program<'info, Token>,
 
     pub clock: Sysvar<'info, Clock>,
 }

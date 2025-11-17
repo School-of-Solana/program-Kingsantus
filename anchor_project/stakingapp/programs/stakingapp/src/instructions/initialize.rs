@@ -20,7 +20,7 @@ pub struct InitializeVault<'info> {
     #[account(
         init,
         payer = user,
-        space = Vault::SPACE,
+        space = 8 + 32 + 8 + 8 + 8 + 1 + 1,
         seeds = [b"vault", user.key().as_ref()],
         bump
     )]
@@ -30,7 +30,7 @@ pub struct InitializeVault<'info> {
         init_if_needed,
         payer = user,
         associated_token::mint = stake_mint,
-        associated_token::authority = user,
+        associated_token::authority = vault,
     )]
     pub vault_token_account: Account<'info, TokenAccount>,
 

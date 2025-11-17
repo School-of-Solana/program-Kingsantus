@@ -1,6 +1,6 @@
 # DApp Staking Protocol — Anchor Program
 
-**Solana Program ID:** 6FmWYQ81oXzFuMMzU2UawfcMXFuLYeLLjM6QjexbzhsW
+**Solana Program ID:** 6jBDgZQh6CgJFE6SvkTBHx4oUHZzF92M3d7qog7KWePz
 
 ---
 
