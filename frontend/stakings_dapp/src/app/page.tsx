@@ -28,7 +28,7 @@ function DashboardContent() {
           setBalance(bal / LAMPORTS_PER_SOL);
         }
       } catch (err) {
-        console.error("Failed to fetch balance:", err);
+        // console.error("Failed to fetch balance:", err);
         if (!isCancelled) {
           setBalance(null);
         }
@@ -43,32 +43,32 @@ function DashboardContent() {
   }, [publicKey, connection]);
 
   // DEBUG BOX — FIXED: program?.idl.name
-  const debugBox = (
-    <div
-      style={{
-        position: "fixed",
-        top: 10,
-        right: 10,
-        background: "#000",
-        color: "#0f0",
-        padding: "12px",
-        borderRadius: "8px",
-        font: "12px monospace",
-        zIndex: 9999,
-        border: "1px solid #0f0",
-        minWidth: "200px",
-      }}
-    >
-      <div>UI Connected: {connected ? "YES" : "NO"}</div>
-      <div>Public Key: {publicKey ? publicKey.toBase58().slice(0, 8) + "..." : "null"}</div>
-      <div>Program Ready: {programReady ? "YES" : "NO"}</div>
-      <div>Program Name: {program?.idl.name || "null"}</div>
-    </div>
-  );
+  // const debugBox = (
+  //   <div
+  //     style={{
+  //       position: "fixed",
+  //       top: 10,
+  //       right: 10,
+  //       background: "#000",
+  //       color: "#0f0",
+  //       padding: "12px",
+  //       borderRadius: "8px",
+  //       font: "12px monospace",
+  //       zIndex: 9999,
+  //       border: "1px solid #0f0",
+  //       minWidth: "200px",
+  //     }}
+  //   >
+  //     <div>UI Connected: {connected ? "YES" : "NO"}</div>
+  //     <div>Public Key: {publicKey ? publicKey.toBase58().slice(0, 8) + "..." : "null"}</div>
+  //     <div>Program Ready: {programReady ? "YES" : "NO"}</div>
+  //     <div>Program Name: {program?.idl.name || "null"}</div>
+  //   </div>
+  // );
 
   return (
     <>
-      {debugBox}
+      {/* {debugBox} */}
 
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
         <div className="container mx-auto px-4 py-8">

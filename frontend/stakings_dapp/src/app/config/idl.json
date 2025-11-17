@@ -1,5 +1,5 @@
 {
-  "address": "6FmWYQ81oXzFuMMzU2UawfcMXFuLYeLLjM6QjexbzhsW",
+  "address": "6jBDgZQh6CgJFE6SvkTBHx4oUHZzF92M3d7qog7KWePz",
   "metadata": {
     "name": "stakingapp",
     "version": "0.1.0",
@@ -44,6 +44,7 @@
         },
         {
           "name": "reward_mint_authority",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -170,7 +171,8 @@
           "signer": true
         },
         {
-          "name": "token_program"
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
           "name": "clock",
@@ -342,7 +344,7 @@
             "seeds": [
               {
                 "kind": "account",
-                "path": "user"
+                "path": "vault"
               },
               {
                 "kind": "const",
@@ -646,7 +648,8 @@
           "name": "stake_mint"
         },
         {
-          "name": "token_program"
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
           "name": "clock",
@@ -798,7 +801,8 @@
           "name": "stake_mint"
         },
         {
-          "name": "token_program"
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
           "name": "clock",

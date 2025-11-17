@@ -1,4 +1,3 @@
-// src/components/WalletProvider.tsx
 "use client";
 import React, { ReactNode, useMemo } from "react";
 import {
@@ -25,15 +24,11 @@ export default function SolanaWalletProvider({
     autoConnect = true
 }: SolanaWalletProviderProps) {
 
-    // Better endpoint handling with fallback
     const endpoint = useMemo(() => {
-        // Check if NETWORK is a cluster name or a full URL
         const clusterNames = ["devnet", "testnet", "mainnet-beta"];
         if (clusterNames.includes(NETWORK)) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return clusterApiUrl(NETWORK as any);
+            return clusterApiUrl(NETWORK as import("@solana/web3.js").Cluster);
         }
-        // Otherwise use the custom RPC URL
         return NETWORK;
     }, []);
 
@@ -45,12 +40,10 @@ export default function SolanaWalletProvider({
         []
     );
 
-    // Error handler for wallet errors
     const onError = useMemo(
         () => (error: Error) => {
             console.error("Wallet error:", error);
 
-            // Handle specific error types
             if (error.name === "WalletNotConnectedError") {
                 console.log("Please connect your wallet");
             } else if (error.name === "WalletSignTransactionError") {
@@ -67,7 +60,7 @@ export default function SolanaWalletProvider({
             endpoint={endpoint}
             config={{
                 commitment: "confirmed",
-                confirmTransactionInitialTimeout: 60000, // 60 seconds
+                confirmTransactionInitialTimeout: 60000,
             }}
         >
             <WalletProvider

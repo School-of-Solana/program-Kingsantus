@@ -170,7 +170,8 @@
           "signer": true
         },
         {
-          "name": "token_program"
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
           "name": "clock",
@@ -342,7 +343,7 @@
             "seeds": [
               {
                 "kind": "account",
-                "path": "user"
+                "path": "vault"
               },
               {
                 "kind": "const",
@@ -646,7 +647,8 @@
           "name": "stake_mint"
         },
         {
-          "name": "token_program"
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
           "name": "clock",
@@ -798,7 +800,8 @@
           "name": "stake_mint"
         },
         {
-          "name": "token_program"
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
           "name": "clock",

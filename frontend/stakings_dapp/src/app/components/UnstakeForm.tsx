@@ -1,7 +1,7 @@
-// src/components/UnstakeForm.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState } from "react";
-import BN from "bn.js";
+import { BN } from "@coral-xyz/anchor";
 import { SYSVAR_CLOCK_PUBKEY } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { useAnchorProgram } from "../lib/anchor";

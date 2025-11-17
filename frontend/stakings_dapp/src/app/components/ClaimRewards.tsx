@@ -1,74 +1,126 @@
 // src/components/ClaimRewards.tsx
 "use client";
 import React, { useState } from "react";
-import { SystemProgram, SYSVAR_CLOCK_PUBKEY } from "@solana/web3.js";
-import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import {
+    SYSVAR_CLOCK_PUBKEY,
+    PublicKey,
+    Transaction,
+} from "@solana/web3.js";
+import {
+    TOKEN_PROGRAM_ID,
+    getAssociatedTokenAddressSync,
+    createAssociatedTokenAccountInstruction,
+} from "@solana/spl-token";
 import { useAnchorProgram } from "../lib/anchor";
-import { findVaultPda, findRewardAuthPda, getUserAta } from "../utils/pda";
-import { REWARD_MINT } from "../config/program";
+import { REWARD_MINT, PROGRAM_ID } from "../config/program";
 
 export default function ClaimRewards() {
-    const { program, walletPublicKey } = useAnchorProgram();
+    const { program, walletPublicKey, provider } = useAnchorProgram();
     const [status, setStatus] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
     const handleClaim = async () => {
-        setStatus(null);
+        if (!program || !walletPublicKey || !provider) return;
+
         setLoading(true);
+        setStatus(null);
 
         try {
-            if (!program) throw new Error("Program not loaded");
-            if (!walletPublicKey) throw new Error("Connect wallet");
+            // 1. PDAs
+            const [rewardMintAuthority] = PublicKey.findProgramAddressSync(
+                [Buffer.from("reward_authority")],
+                PROGRAM_ID
+            );
 
-            setStatus("Claiming rewards...");
+            const userRewardAta = getAssociatedTokenAddressSync(
+                REWARD_MINT,
+                walletPublicKey
+            );
 
-            const [vaultPda] = findVaultPda(walletPublicKey);
-            const [rewardAuthPda] = findRewardAuthPda(walletPublicKey);
-            const userRewardAccount = getUserAta(walletPublicKey, REWARD_MINT);
+            const [vaultPda] = PublicKey.findProgramAddressSync(
+                [Buffer.from("vault"), walletPublicKey.toBuffer()],
+                PROGRAM_ID
+            );
+
+            // 2. Check if user's reward ATA exists — if not, create it!
+            const ataInfo = await provider.connection.getAccountInfo(userRewardAta);
+            if (!ataInfo) {
+                setStatus("Creating your reward token account... (first time only)");
+                const createAtaTx = new Transaction().add(
+                    createAssociatedTokenAccountInstruction(
+                        walletPublicKey,     // payer
+                        userRewardAta,       // ata to create
+                        walletPublicKey,     // owner
+                        REWARD_MINT          // mint
+                    )
+                );
+
+                const sig = await provider.sendAndConfirm(createAtaTx);
+                console.log("ATA created:", sig);
+                setStatus("Reward account ready! Now claiming...");
+            }
+
+            // 3. Claim rewards
+            setStatus("Claiming your rewards...");
 
             const tx = await program.methods
                 .claimRewards()
                 .accounts({
                     vault: vaultPda,
-                    rewardMintAuthority: rewardAuthPda,
+                    rewardMintAuthority,
                     rewardMint: REWARD_MINT,
-                    userRewardAccount: userRewardAccount,
+                    userRewardAccount: userRewardAta,
                     user: walletPublicKey,
                     tokenProgram: TOKEN_PROGRAM_ID,
                     clock: SYSVAR_CLOCK_PUBKEY,
                 })
                 .rpc();
 
-            setStatus(`✅ Rewards claimed! Tx: ${tx.slice(0, 8)}...`);
+            setStatus(`Rewards claimed! Tx: ${tx.slice(0, 8)}...`);
             console.log(`https://explorer.solana.com/tx/${tx}?cluster=devnet`);
-
         } catch (err: any) {
-            console.error("Claim error:", err);
-            let errorMsg = err.message || String(err);
-            if (errorMsg.includes("User rejected")) errorMsg = "Transaction cancelled";
-            setStatus(`❌ Error: ${errorMsg}`);
+            console.error("Claim failed:", err);
+            const msg = err.message || err.toString();
+            if (msg.includes("User rejected")) {
+                setStatus("Cancelled by user");
+            } else if (msg.includes("AccountNotInitialized")) {
+                setStatus("Still creating account... try again in 5 seconds");
+            } else {
+                setStatus(`Error: ${msg}`);
+            }
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="p-6 border border-gray-200 rounded-lg space-y-4 bg-white shadow-sm">
-            <h3 className="text-lg font-semibold">Claim Rewards</h3>
+        <div className="p-6 border border-green-300 rounded-xl space-y-4 bg-gradient-to-br from-green-50 to-white shadow-lg">
+            <h3 className="text-2xl font-bold text-green-800">Claim Rewards</h3>
+            <p className="text-sm text-gray-600">
+                Fresh rewards minted live — no pre-mint, pure Naija yield!
+            </p>
 
             <button
                 onClick={handleClaim}
-                disabled={loading || !walletPublicKey}
-                className="w-full px-4 py-3 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                disabled={loading || !walletPublicKey || !program}
+                className="w-full py-4 px-6 rounded-xl bg-green-600 text-white font-bold text-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all transform hover:scale-105 shadow-md"
             >
-                {loading ? "Claiming..." : !walletPublicKey ? "Connect Wallet" : "Claim Rewards"}
+                {loading
+                    ? "Working magic..."
+                    : !walletPublicKey
+                        ? "Connect Wallet"
+                        : "Claim Rewards"}
             </button>
 
             {status && (
-                <div className={`p-3 rounded-lg text-sm ${status.includes("✅") ? "bg-green-50 text-green-800 border border-green-200"
-                        : status.includes("❌") ? "bg-red-50 text-red-800 border border-red-200"
-                            : "bg-blue-50 text-blue-800 border border-blue-200"
-                    }`}>
+                <div
+                    className={`p-4 rounded-lg text-sm font-medium border-2 ${status.includes("claimed")
+                            ? "bg-green-100 text-green-900 border-green-500"
+                            : status.includes("Creating") || status.includes("ready")
+                                ? "bg-blue-100 text-blue-900 border-blue-500"
+                                : "bg-red-100 text-red-900 border-red-500"
+                        }`}
+                >
                     {status}
                 </div>
             )}

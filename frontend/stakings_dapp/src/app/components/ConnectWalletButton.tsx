@@ -1,7 +1,7 @@
 "use client";
+
 import dynamic from "next/dynamic";
 
-// Dynamically import WalletMultiButton with ssr: false
 const WalletMultiButton = dynamic(
     () => import("@solana/wallet-adapter-react-ui").then((mod) => mod.WalletMultiButton),
     { ssr: false }

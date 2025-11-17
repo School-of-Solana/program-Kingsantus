@@ -1,4 +1,3 @@
-// src/utils/pda.ts
 import { PublicKey } from "@solana/web3.js";
 import { PROGRAM_ID, STAKE_MINT } from "../config/program";
 import { 
@@ -9,15 +8,12 @@ import {
  * Vault PDA - stores user staking data
  * Seeds: ["vault", user_pubkey]
  */
-export function findVaultPda(
-    user: PublicKey,
-    programId: PublicKey = new PublicKey("6FmWYQ81oXzFuMMzU2UawfcMXFuLYeLLjM6QjexbzhsW")
-): [PublicKey, number] {
-    return PublicKey.findProgramAddressSync(
-        [Buffer.from("vault"), user.toBuffer()],
-        programId
-    );
-}
+export const findVaultPda = (user: PublicKey) => {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("vault"), user.toBuffer()],
+    PROGRAM_ID
+  );
+};
 
 
 /**
