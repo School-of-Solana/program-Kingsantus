@@ -1,6 +1,6 @@
 # StakingAPP — Infinite Reward Staking dApp
 
-**Deployed Frontend URL:** [TODO: Add your Vercel/Netlify link here]  
+**Deployed Frontend URL:** `https://stakingapp-zeta.vercel.app/`  
 **Solana Program ID:** `6jBDgZQh6CgJFE6SvkTBHx4oUHZzF92M3d7qog7KWePz`
 
 ## Project Overview
@@ -27,6 +27,8 @@ This is **real DeFi made in Nigeria** — secure, clean, and designed to print m
     To be able to control the project during the timeframe this coin 
     is the only coin to be used for now... you can add from your side in the program.ts
     Stake_Mint
+    forward your wallet address to discord "search for kingsantus"
+    I have a tiger in my DP so you know your requesting from
 
 1. **Connect Wallet**  
    Click "Connect Wallet" (Phantom, Solflare, etc.)
