@@ -131,7 +131,6 @@ export default function StakeForm() {
                 }
             }
 
-            // STAKE
             setStatus("Staking...");
             const sig = await program.methods.stake(stakeAmount)
                 .accounts({

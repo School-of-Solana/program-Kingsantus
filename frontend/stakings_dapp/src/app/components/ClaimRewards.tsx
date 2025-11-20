@@ -26,7 +26,6 @@ export default function ClaimRewards() {
         setStatus(null);
 
         try {
-            // 1. PDAs
             const [rewardMintAuthority] = PublicKey.findProgramAddressSync(
                 [Buffer.from("reward_authority")],
                 PROGRAM_ID
@@ -42,16 +41,15 @@ export default function ClaimRewards() {
                 PROGRAM_ID
             );
 
-            // 2. Check if user's reward ATA exists — if not, create it!
             const ataInfo = await provider.connection.getAccountInfo(userRewardAta);
             if (!ataInfo) {
                 setStatus("Creating your reward token account... (first time only)");
                 const createAtaTx = new Transaction().add(
                     createAssociatedTokenAccountInstruction(
-                        walletPublicKey,     // payer
-                        userRewardAta,       // ata to create
-                        walletPublicKey,     // owner
-                        REWARD_MINT          // mint
+                        walletPublicKey,
+                        userRewardAta,
+                        walletPublicKey,
+                        REWARD_MINT
                     )
                 );
 
@@ -60,7 +58,6 @@ export default function ClaimRewards() {
                 setStatus("Reward account ready! Now claiming...");
             }
 
-            // 3. Claim rewards
             setStatus("Claiming your rewards...");
 
             const tx = await program.methods

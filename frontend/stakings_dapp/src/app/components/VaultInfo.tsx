@@ -19,7 +19,6 @@ function formatTokenAmount(amount: BN | number, decimals = 9): string {
 export default function VaultInfo() {
     const { program, walletPublicKey } = useAnchorProgram();
 
-    // THIS IS THE MAGIC LINE — YOU ARE NOW FREE
     const typedProgram = program as unknown as Program<Stakingapp>;
 
     const [info, setInfo] = useState<any>(null);
@@ -35,7 +34,6 @@ export default function VaultInfo() {
         try {
             const [vaultPda] = findVaultPda(walletPublicKey);
 
-            // CLEAN, CORRECT, NO ERRORS — FOREVER
             const vaultAcc = await typedProgram.account.vault.fetchNullable(vaultPda);
 
             if (!vaultAcc) {
