@@ -1,4 +1,5 @@
 # StakingAPP — Infinite Reward Staking dApp
+![My Image](stakeapp.jpg)
 
 **Deployed Frontend URL:** `https://stakingapp-zeta.vercel.app/`  
 **Solana Program ID:** `6jBDgZQh6CgJFE6SvkTBHx4oUHZzF92M3d7qog7KWePz`
